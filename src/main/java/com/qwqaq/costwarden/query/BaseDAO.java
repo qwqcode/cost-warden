@@ -13,14 +13,13 @@ public class BaseDAO {
      */
     protected boolean openConn() {
         // TODO 改为 properties
-        String driver = "com.mysql.jdbc.Driver";
         String url = "jdbc:mysql://localhost:3306/costwarden?characterEncoding=UTF8&useSSL=false";
         String user = "root";
         String password = "123456";
         // @note 由于安全策略默认开启 SSL，需添加 &useSSL=false 关闭以满足测试环境要求
 
         try {
-            Class.forName(driver); // 加载驱动
+            Class.forName("com.mysql.jdbc.Driver"); // 加载驱动
             conn = DriverManager.getConnection(url, user, password); // 建立连接
             return true;
         } catch (Exception e) {

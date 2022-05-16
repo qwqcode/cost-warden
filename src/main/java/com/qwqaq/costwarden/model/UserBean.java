@@ -1,17 +1,17 @@
 package com.qwqaq.costwarden.model;
 
 public class UserBean {
-    private long uid;
+    private int uid;
     private String email;
     private String name;
     private String password;
     private boolean isAdmin;
 
-    public long getUid() {
+    public int getUid() {
         return uid;
     }
 
-    public void setUid(long uid) {
+    public void setUid(int uid) {
         this.uid = uid;
     }
 
