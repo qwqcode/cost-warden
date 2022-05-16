@@ -26,6 +26,23 @@ public class TagDAO extends BaseDAO {
         return tag;
     }
 
+    public TagBean getTagByTid(int tid) {
+        TagBean tag = null;
+
+        try {
+            ResultSet rs = this.select("SELECT * FROM tags WHERE tid = ? LIMIT 1", tid);
+            if (rs.next()) {
+                tag = rsToBean(rs);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            this.closeConn();
+        }
+
+        return tag;
+    }
+
     public boolean createTag(TagBean tag) {
         try {
             int rec = this.update("INSERT INTO tags "

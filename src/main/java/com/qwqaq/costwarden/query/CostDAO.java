@@ -1,6 +1,7 @@
 package com.qwqaq.costwarden.query;
 
 import com.qwqaq.costwarden.model.CostBean;
+import com.qwqaq.costwarden.model.TagBean;
 import com.qwqaq.costwarden.model.UserBean;
 
 import java.sql.ResultSet;
@@ -25,6 +26,23 @@ public class CostDAO extends BaseDAO {
         }
 
         return costs;
+    }
+
+    public CostBean getCostByCid(int cid) {
+        CostBean cost = null;
+
+        try {
+            ResultSet rs = this.select("SELECT * FROM costs WHERE cid = ? LIMIT 1", cid);
+            if (rs.next()) {
+                cost = rsToBean(rs);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            this.closeConn();
+        }
+
+        return cost;
     }
 
     public boolean createCost(CostBean cost) {
