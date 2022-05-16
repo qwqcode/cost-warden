@@ -28,11 +28,39 @@ public class TagDAO extends BaseDAO {
 
     public boolean createTag(TagBean tag) {
         try {
-            this.update("INSERT INTO tags "
+            int rec = this.update("INSERT INTO tags "
                             + "(name, desc, icon) VALUES "
                             + "(?, ?, ?)",
                     tag.getName(), tag.getDesc(), tag.getIcon());
-            return true;
+            return (rec == 1);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        } finally {
+            this.closeConn();
+        }
+    }
+
+    public boolean updateTag(TagBean tag) {
+        try {
+            int rec = this.update("UPDATE tags "
+                            + "SET name = ?, desc = ?, icon = ? "
+                            + "WHERE tid = ?",
+                    tag.getName(), tag.getDesc(), tag.getIcon(),
+                    tag.getTid());
+            return (rec == 1);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        } finally {
+            this.closeConn();
+        }
+    }
+
+    public boolean delTagByTid(int tid) {
+        try {
+            int rec = this.update("DELETE FROM tags WHERE tid = ?", tid);
+            return (rec == 1);
         } catch (Exception e) {
             e.printStackTrace();
             return false;

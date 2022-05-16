@@ -31,11 +31,39 @@ public class CostDAO extends BaseDAO {
         Timestamp curtTime = new java.sql.Timestamp(Calendar.getInstance().getTimeInMillis());
 
         try {
-            this.update("INSERT INTO costs "
+            int rec = this.update("INSERT INTO costs "
                             + "(uid, tid, price, note, date) VALUES "
                             + "(?, ?, ?, ?, ?)",
                     cost.getUid(), cost.getTid(), cost.getPrice(), cost.getNote(), curtTime);
-            return true;
+            return (rec == 1);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        } finally {
+            this.closeConn();
+        }
+    }
+
+    public boolean delCostByCid(int cid) {
+        try {
+            int rec = this.update("DELETE FROM costs WHERE cid = ?", cid);
+            return (rec == 1);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        } finally {
+            this.closeConn();
+        }
+    }
+
+    public boolean updateCost(CostBean cost) {
+        try {
+            int rec = this.update("UPDATE costs "
+                            + "SET uid = ?, tid = ?, price = ?, note = ?, date = ? "
+                            + "WHERE cid = ?",
+                    cost.getUid(), cost.getTid(), cost.getPrice(), cost.getNote(), cost.getDate(),
+                    cost.getCid());
+            return (rec == 1);
         } catch (Exception e) {
             e.printStackTrace();
             return false;

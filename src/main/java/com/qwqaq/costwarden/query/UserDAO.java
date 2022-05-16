@@ -1,5 +1,6 @@
 package com.qwqaq.costwarden.query;
 
+import com.qwqaq.costwarden.model.TagBean;
 import com.qwqaq.costwarden.model.UserBean;
 
 import java.sql.ResultSet;
@@ -53,11 +54,27 @@ public class UserDAO extends BaseDAO {
 
     public boolean createUser(UserBean user) {
         try {
-            this.update("INSERT INTO users "
+            int rec = this.update("INSERT INTO users "
                             + "(email, name, password, is_admin) VALUES "
                             + "(?, ?, ?, ?)",
                     user.getEmail(), user.getName(), user.getPassword(), (user.isAdmin() ? 1 : 0));
-            return true;
+            return (rec == 1);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        } finally {
+            this.closeConn();
+        }
+    }
+
+    public boolean updateUser(UserBean user) {
+        try {
+            int rec = this.update("UPDATE users "
+                            + "SET email = ?, name = ?, password = ?, is_admin = ? "
+                            + "WHERE uid = ?",
+                    user.getEmail(), user.getName(), user.getPassword(), (user.isAdmin() ? 1 : 0),
+                    user.getUid());
+            return (rec == 1);
         } catch (Exception e) {
             e.printStackTrace();
             return false;
