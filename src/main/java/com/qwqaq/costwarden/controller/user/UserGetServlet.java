@@ -12,7 +12,7 @@ import java.io.IOException;
 public class UserGetServlet extends BaseController {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        UserBean user = (UserBean) req.getSession().getAttribute("user");
+        UserBean user = GetUserByReq(req);
         if (user == null) {
             RespError(resp, "未登录，请先登录");
             return;

@@ -1,9 +1,11 @@
 package com.qwqaq.costwarden.controller;
 
 import com.google.gson.Gson;
+import com.qwqaq.costwarden.model.UserBean;
 import com.qwqaq.costwarden.util.RespBean;
 
 import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -11,6 +13,19 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class BaseController extends HttpServlet {
+    public static UserBean GetUserByReq(HttpServletRequest req) {
+        return (UserBean) req.getSession().getAttribute("user");
+    }
+
+    public static boolean LoginRequired(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        if (GetUserByReq(req) == null) {
+            RespError(resp, "未登录，请先登录");
+            return false;
+        }
+
+        return true;
+    }
+
     public static boolean IsEmpty(final String... strings) {
         for (int i = 0; i < strings.length; i++) {
             if (IsEmpty(strings[i])) return true;

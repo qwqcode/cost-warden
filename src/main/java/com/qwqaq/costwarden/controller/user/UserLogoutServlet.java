@@ -12,8 +12,7 @@ import java.io.IOException;
 public class UserLogoutServlet extends BaseController {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        UserBean user = (UserBean) req.getSession().getAttribute("user");
-        if (user == null) {
+        if (GetUserByReq(req) == null) {
             RespError(resp, "用户未登录，无需注销");
             return;
         }
