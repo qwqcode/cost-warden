@@ -6,9 +6,27 @@ import com.qwqaq.costwarden.model.TagBean;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.Calendar;
 
 public class TagDAO extends BaseDAO {
+    public ArrayList<TagBean> getAllTags() {
+        ArrayList<TagBean> tags = new ArrayList<TagBean>();
+
+        try {
+            ResultSet rs = this.select("SELECT * FROM tags");
+            while (rs.next()) {
+                tags.add(rsToBean(rs));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            this.closeConn();
+        }
+
+        return tags;
+    }
+
     public TagBean getTagByName(String name) {
         TagBean tag = null;
 
