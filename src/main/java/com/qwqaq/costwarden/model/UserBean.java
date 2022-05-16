@@ -5,7 +5,7 @@ public class UserBean {
     private String email;
     private String name;
     private String password;
-    private boolean isAdmin;
+    private boolean isAdmin = false;
 
     public int getUid() {
         return uid;

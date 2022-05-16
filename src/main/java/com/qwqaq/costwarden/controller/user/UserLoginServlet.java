@@ -15,12 +15,12 @@ public class UserLoginServlet extends BaseController {
         String username = req.getParameter("username");
         String password = req.getParameter("password");
 
-        if (IsEmpty(username) || IsEmpty(password)) {
+        if (IsEmpty(username, password)) {
              RespError(resp, "请求参数不完整");
              return;
         }
 
-        UserBean user = Query.getUserDAO().getUserByName(username);
+        UserBean user = Query.getUserDAO().getUserByNameOrEmail(username, username);
         if (user == null || !password.equals(user.getPassword())) {
             RespError(resp, "用户名或密码有误");
             return;

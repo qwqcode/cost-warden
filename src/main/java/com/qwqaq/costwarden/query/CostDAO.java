@@ -1,10 +1,13 @@
 package com.qwqaq.costwarden.query;
 
 import com.qwqaq.costwarden.model.CostBean;
+import com.qwqaq.costwarden.model.UserBean;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 public class CostDAO extends BaseDAO {
     public ArrayList<CostBean> getCostsByUid(int uid) {
@@ -22,6 +25,23 @@ public class CostDAO extends BaseDAO {
         }
 
         return costs;
+    }
+
+    public boolean createCost(CostBean cost) {
+        Timestamp curtTime = new java.sql.Timestamp(Calendar.getInstance().getTimeInMillis());
+
+        try {
+            this.update("INSERT INTO costs "
+                            + "(uid, tid, price, note, date) VALUES "
+                            + "(?, ?, ?, ?, ?)",
+                    cost.getUid(), cost.getTid(), cost.getPrice(), cost.getNote(), curtTime);
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        } finally {
+            this.closeConn();
+        }
     }
 
     private CostBean rsToBean(ResultSet rs) throws SQLException {

@@ -7,11 +7,28 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class BaseController extends HttpServlet {
+    public static boolean IsEmpty(final String... strings) {
+        for (int i = 0; i < strings.length; i++) {
+            if (IsEmpty(strings[i])) return true;
+        }
+
+        return false;
+    }
+
     // 判断值是否为空 (不允许纯空格字符串)
-    public static boolean IsEmpty(final String string) {
-        return string == null || string.trim().isEmpty();
+    public static boolean IsEmpty(final String str) {
+        return str == null || str.trim().isEmpty();
+    }
+
+    public static boolean IsEmail(String email) {
+        String emailRegx = "^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\])|(([a-zA-Z\\-0-9]+\\.)+[a-zA-Z]{2,}))$";
+        Pattern p = Pattern.compile(emailRegx);
+        Matcher m = p.matcher(email);
+        return m.matches();
     }
 
     // 响应成功

@@ -6,14 +6,12 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class UserDAO extends BaseDAO {
-    public UserBean getUserByName(String name) {
+    public UserBean getUserByNameOrEmail(String name, String email) {
         UserBean user = null;
 
         try {
-            ResultSet rs = this.select("SELECT * FROM users WHERE name = ? LIMIT 1", name);
-            if (rs.next()) {
-                user = rsToBean(rs);
-            }
+            ResultSet rs = this.select("SELECT * FROM users WHERE LOWER(name) = LOWER(?) OR LOWER(email) = LOWER(?) LIMIT 1", name, email);
+            if (rs.next()) user = rsToBean(rs);
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
@@ -21,6 +19,51 @@ public class UserDAO extends BaseDAO {
         }
 
         return user;
+    }
+
+    public UserBean getUserByName(String name) {
+        UserBean user = null;
+
+        try {
+            ResultSet rs = this.select("SELECT * FROM users WHERE LOWER(name) = LOWER(?) LIMIT 1", name);
+            if (rs.next()) user = rsToBean(rs);
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            this.closeConn();
+        }
+
+        return user;
+    }
+
+    public UserBean getUserByEmail(String email) {
+        UserBean user = null;
+
+        try {
+            ResultSet rs = this.select("SELECT * FROM users WHERE LOWER(email) = LOWER(?) LIMIT 1", email);
+            if (rs.next()) user = rsToBean(rs);
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            this.closeConn();
+        }
+
+        return user;
+    }
+
+    public boolean createUser(UserBean user) {
+        try {
+            this.update("INSERT INTO users "
+                            + "(email, name, password, is_admin) VALUES "
+                            + "(?, ?, ?, ?)",
+                    user.getEmail(), user.getName(), user.getPassword(), (user.isAdmin() ? 1 : 0));
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        } finally {
+            this.closeConn();
+        }
     }
 
     private UserBean rsToBean(ResultSet rs) throws SQLException {

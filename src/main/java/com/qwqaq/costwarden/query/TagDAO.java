@@ -1,9 +1,12 @@
 package com.qwqaq.costwarden.query;
 
+import com.qwqaq.costwarden.model.CostBean;
 import com.qwqaq.costwarden.model.TagBean;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.util.Calendar;
 
 public class TagDAO extends BaseDAO {
     public TagBean getTagByName(String name) {
@@ -21,6 +24,21 @@ public class TagDAO extends BaseDAO {
         }
 
         return tag;
+    }
+
+    public boolean createTag(TagBean tag) {
+        try {
+            this.update("INSERT INTO tags "
+                            + "(name, desc, icon) VALUES "
+                            + "(?, ?, ?)",
+                    tag.getName(), tag.getDesc(), tag.getIcon());
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        } finally {
+            this.closeConn();
+        }
     }
 
     private TagBean rsToBean(ResultSet rs) throws SQLException {
