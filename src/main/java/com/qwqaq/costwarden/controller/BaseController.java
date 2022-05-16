@@ -2,7 +2,6 @@ package com.qwqaq.costwarden.controller;
 
 import com.google.gson.Gson;
 import com.qwqaq.costwarden.model.UserBean;
-import com.qwqaq.costwarden.util.RespBean;
 
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;

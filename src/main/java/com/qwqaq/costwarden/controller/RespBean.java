@@ -1,4 +1,4 @@
-package com.qwqaq.costwarden.util;
+package com.qwqaq.costwarden.controller;
 
 public class RespBean {
     private boolean success;

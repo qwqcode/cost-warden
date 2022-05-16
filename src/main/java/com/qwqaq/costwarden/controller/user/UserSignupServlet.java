@@ -3,7 +3,6 @@ package com.qwqaq.costwarden.controller.user;
 import com.qwqaq.costwarden.controller.BaseController;
 import com.qwqaq.costwarden.model.UserBean;
 import com.qwqaq.costwarden.query.Query;
-import com.qwqaq.costwarden.util.RespBean;
 
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
