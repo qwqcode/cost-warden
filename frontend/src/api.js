@@ -37,7 +37,7 @@ export async function logoutUser() {
 export async function Fetch(input, init) {
     init.credentials = 'include' // 跨域传递 Cookie
     init.headers = {
-        // Use `x-www-form-urlencoded` bcz Servlet < v3 cannot handle `multipart/form-data`
+        // Use `x-www-form-urlencoded` bcz Servlet < v3 cannot handle `multipart/form-data` directly
         'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
     }
 

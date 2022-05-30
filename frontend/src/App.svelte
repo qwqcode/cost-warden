@@ -1,4 +1,5 @@
 <script>
+import List from "./List.svelte";
 import Login from "./Login.svelte";
 
 let logined = false
@@ -21,6 +22,9 @@ function onSignuped() {
 		<div class="sidebar">
 			<div class="brand" style:height="{!logined ? '100%' : '120px'}"></div>
 			<div class="sidebar-body" bind:this={sidebarBody} style="display: none;">
+				{#if logined}
+					<List />
+				{/if}
 			</div>
 		</div>
 		<div class="body">
