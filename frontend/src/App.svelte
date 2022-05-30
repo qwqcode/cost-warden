@@ -1,40 +1,18 @@
 <script>
 import Login from "./Login.svelte";
-import * as Api from './api'; 
 
 let logined = false
 let sidebarBody;;
 
-function loginAction(event) {
-	fetch(`${Api.API_BASE}/user/login`, {
-		method: 'POST',
-		headers: {
-			'Content-Type': 'application/json'
-		},
-		body: JSON.stringify({
-			username: event.detail.username,
-			password: event.detail.password
-		})
-	}).then(res => {
-		if (res.status === 200) {
-			return res.json()
-		}
-	}).then(res => {
-		if (!res.success) {
-			alert(res.msg)
-			return
-		}
-
-		setLogined();
-		console.log(res)
-	})
-}
-
-function setLogined() {
+function onLogined() {
 	logined = true
 	setTimeout(() => {
 		sidebarBody.style.display = ''
 	}, 300)
+}
+
+function onSignuped() {
+	
 }
 </script>
 
@@ -47,7 +25,7 @@ function setLogined() {
 		</div>
 		<div class="body">
 			{#if !logined}
-			<Login on:login={loginAction} />
+			<Login on:logined={onLogined} on:signuped={onSignuped}  />
 			{/if}
 		</div>
 	</div>

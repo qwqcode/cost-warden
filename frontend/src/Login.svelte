@@ -1,24 +1,50 @@
 <script>
-    import { createEventDispatcher } from 'svelte';
+import { createEventDispatcher } from 'svelte';
+import * as Api from './api'; 
 
-    const dispatch = createEventDispatcher();
+const dispatch = createEventDispatcher();
 
-    let username = '';
-    let password = '';
+let type = 'login';
+let username = '';
+let password = '';
+    
+// fields for signup
+let email = '';
+let rePassword = '';
 
-	function login() {
-		dispatch('login', {
-			username, password
-		});
-	}
+// 登录
+function login() {
+    Api.login(username, password).then(() => {
+        dispatch('logined');
+    });
+}
+
+// 注册
+function signup() {
+    Api.signup(username, email, password, rePassword).then(() => {
+        dispatch('signuped');
+    })
+}
 </script>
 
 <div class="login">
+    {#if type === 'login'}
     <input type="text" bind:value={username} placeholder="用户名" autocomplete="off">
     <input type="password" bind:value={password} placeholder="密码">
+    {:else}
+    <input type="text" bind:value={username} placeholder="用户名" autocomplete="off">
+    <input type="text" bind:value={email} placeholder="邮箱" autocomplete="off">
+    <input type="password" bind:value={password} placeholder="密码">
+    <input type="password" bind:value={rePassword} placeholder="确认密码">
+    {/if}
     <div class="bottom">
+        {#if type === 'login'}
         <button type="submit" on:click={login}>登录</button>
-        <button class="signup-btn">注册</button>
+        <button class="switch-btn">注册</button>
+        {:else}
+        <button type="submit" on:click={signup}>注册</button>
+        <button class="switch-btn">登录</button>
+        {/if}
     </div>
 </div>
 
@@ -62,7 +88,7 @@
         color: #fff;
     }
 
-    .signup-btn {
+    .switch-btn {
         cursor: pointer;
         background: transparent;
         color: #000;
