@@ -1,12 +1,23 @@
 <script>
+    import { createEventDispatcher } from 'svelte';
 
+    const dispatch = createEventDispatcher();
+
+    let username = '';
+    let password = '';
+
+	function login() {
+		dispatch('login', {
+			username, password
+		});
+	}
 </script>
 
 <div class="login">
-    <input type="text" placeholder="用户名" autocomplete="off">
-    <input type="password" placeholder="密码">
+    <input type="text" bind:value={username} placeholder="用户名" autocomplete="off">
+    <input type="password" bind:value={password} placeholder="密码">
     <div class="bottom">
-        <button type="submit">登录</button>
+        <button type="submit" on:click={login}>登录</button>
         <button class="signup-btn">注册</button>
     </div>
 </div>
