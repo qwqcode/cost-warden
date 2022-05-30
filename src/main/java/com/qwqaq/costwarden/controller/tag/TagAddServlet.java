@@ -27,7 +27,10 @@ public class TagAddServlet extends BaseController {
         String desc = req.getParameter("desc");
         String icon = req.getParameter("icon");
 
-        if (IsEmpty(name, desc, icon)) return;
+        if (IsEmpty(name)) {
+            RespError(resp, "参数 name 不能为空");
+            return;
+        }
 
         // 保存数据
         TagBean tag = new TagBean();
@@ -35,6 +38,8 @@ public class TagAddServlet extends BaseController {
         tag.setDesc(desc);
         tag.setIcon(icon);
 
-        Query.getTagDAO().createTag(tag);
+        boolean result = Query.getTagDAO().createTag(tag);
+        if (result) RespSuccess(resp);
+        else RespError(resp, "保存失败");
     }
 }

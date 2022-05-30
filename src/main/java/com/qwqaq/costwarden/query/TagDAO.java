@@ -64,7 +64,7 @@ public class TagDAO extends BaseDAO {
     public boolean createTag(TagBean tag) {
         try {
             int rec = this.update("INSERT INTO tags "
-                            + "(name, desc, icon) VALUES "
+                            + "(`name`, `desc`, `icon`) VALUES "
                             + "(?, ?, ?)",
                     tag.getName(), tag.getDesc(), tag.getIcon());
             return (rec == 1);

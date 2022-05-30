@@ -78,21 +78,21 @@ public class BaseDAO {
      */
     protected boolean closeConn() {
         try {
-            if (!rs.isClosed()) rs.close();
+            if (rs != null && !rs.isClosed()) rs.close();
         } catch (SQLException e) {
             e.printStackTrace();
             return false;
         }
 
         try {
-            if (!ps.isClosed()) ps.close();
+            if (ps != null && !ps.isClosed()) ps.close();
         } catch (SQLException e) {
             e.printStackTrace();
             return false;
         }
 
         try {
-            if (!conn.isClosed()) conn.close();
+            if (conn != null && !conn.isClosed()) conn.close();
         } catch (SQLException e) {
             e.printStackTrace();
             return false;

@@ -47,6 +47,8 @@ public class CostAddServlet extends BaseController {
         cost.setNote(note);
         cost.setUid(user.getUid());
 
-        Query.getCostDAO().createCost(cost);
+        boolean result = Query.getCostDAO().createCost(cost);
+        if (result) RespSuccess(resp);
+        else RespError(resp, "保存失败");
     }
 }
