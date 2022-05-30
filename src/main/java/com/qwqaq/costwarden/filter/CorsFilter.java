@@ -28,6 +28,7 @@ public class CorsFilter implements Filter {
             // Authorize the origin, all headers, and all methods
             ((HttpServletResponse) servletResponse).addHeader("Access-Control-Allow-Origin", requestOrigin);
             ((HttpServletResponse) servletResponse).addHeader("Access-Control-Allow-Headers", "*");
+            ((HttpServletResponse) servletResponse).addHeader("Access-Control-Allow-Credentials", "true"); // 允许跨域 Cookie
             ((HttpServletResponse) servletResponse).addHeader("Access-Control-Allow-Methods",
                     "GET, OPTIONS, HEAD, PUT, POST, DELETE");
 

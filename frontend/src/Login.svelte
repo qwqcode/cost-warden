@@ -25,6 +25,10 @@ function signup() {
         dispatch('signuped');
     })
 }
+
+function switchType() {
+    type = (type === 'login') ? 'signup' : 'login'
+}
 </script>
 
 <div class="login">
@@ -40,10 +44,10 @@ function signup() {
     <div class="bottom">
         {#if type === 'login'}
         <button type="submit" on:click={login}>登录</button>
-        <button class="switch-btn">注册</button>
+        <button class="switch-btn" on:click="{switchType}">注册</button>
         {:else}
         <button type="submit" on:click={signup}>注册</button>
-        <button class="switch-btn">登录</button>
+        <button class="switch-btn" on:click="{switchType}">登录</button>
         {/if}
     </div>
 </div>

@@ -2,7 +2,7 @@
 import Login from "./Login.svelte";
 
 let logined = false
-let sidebarBody;;
+let sidebarBody;
 
 function onLogined() {
 	logined = true

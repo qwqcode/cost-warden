@@ -15,6 +15,22 @@ export async function signup(username, email, password, rePassword) {
     return await POST(`/user/signup`, params)
 }
 
+export async function getCosts() {
+    return await POST(`/cost/get`)
+}
+
+export async function getTags() {
+    return await POST(`/tag/get`)
+}
+
+export async function getUser() {
+    return await POST(`/user/get`)
+}
+
+export async function logoutUser() {
+    return await POST(`/user/logout`)
+}
+
 /**
  * 封装统一的 fetch 函数
  */
