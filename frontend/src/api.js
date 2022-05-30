@@ -36,6 +36,10 @@ export async function logoutUser() {
  */
 export async function Fetch(input, init) {
     init.credentials = 'include' // 跨域传递 Cookie
+    init.headers = {
+        // Use `x-www-form-urlencoded` bcz Servlet < v3 cannot handle `multipart/form-data`
+        'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
+    }
 
     // 请求操作
     const resp = await fetch(API_BASE + input, init)
@@ -65,7 +69,7 @@ export async function POST(url, data) {
     const init = {
       method: 'POST',
     }
-    if (data) init.body = ToFormData(data)
+    if (data) init.body = new URLSearchParams(data)
   
     const json = await Fetch(url, init)
     return json.data
