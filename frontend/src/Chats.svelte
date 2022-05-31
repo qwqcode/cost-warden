@@ -1,6 +1,6 @@
 <script>
-import * as Api from './api';
-import * as Stat from './stat'
+import * as Api from './lib/api';
+import * as Stat from './lib/stat'
 import { onMount } from 'svelte';
 
 let pieChartEl = null

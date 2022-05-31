@@ -1,7 +1,7 @@
 <script>
-import * as Api from './api';
+import * as Api from './lib/api';
+import { tags as sTags, costs, editCost as sEditCost, FetchCosts, SwitchWorkSpace } from './lib/stores'
 import { onMount } from "svelte";
-import { tags as sTags, costs, editCost as sEditCost, FetchCosts, SwitchWorkSpace } from './stores'
 
 let dateGrpCosts = []
 let tags = []

@@ -1,6 +1,6 @@
 <script>
 import { createEventDispatcher } from 'svelte';
-import * as Api from './api'; 
+import * as Api from './lib/api'; 
 
 const dispatch = createEventDispatcher();
 

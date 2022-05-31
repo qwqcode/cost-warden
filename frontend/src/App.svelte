@@ -1,5 +1,5 @@
 <script>
-import { FetchTags, workspace as sWorkpace } from './stores'
+import { FetchTags, workspace as sWorkpace } from './lib/stores'
 import ActBar from "./ActBar.svelte";
 import Chats from "./Chats.svelte";
 

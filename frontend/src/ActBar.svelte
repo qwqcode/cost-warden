@@ -1,5 +1,5 @@
 <script>
-import { SwitchWorkSpace, workspace as sWorkpace } from './stores'
+import { SwitchWorkSpace, workspace as sWorkpace } from './lib/stores'
 
 let curt = ''
 sWorkpace.subscribe(val => {

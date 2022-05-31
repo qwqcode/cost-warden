@@ -1,7 +1,6 @@
 <script>
 import { onMount } from "svelte";
-import { tags as sTags, selectedTid as sSelectedTid } from './stores'
-import * as Api from './api'
+import { tags as sTags, selectedTid as sSelectedTid } from './lib/stores'
 
 let tags = []
 let selectedID = null
