@@ -1,31 +1,34 @@
 <script>
 import * as Api from './api';
 import { onMount } from "svelte";
+import { tags as sTags, costs, editCost as sEditCost, FetchCosts } from './stores'
 
 let dateGrpCosts = []
+let tags = []
+
+costs.subscribe(value => {
+  dateGrpCosts = value
+})
+sTags.subscribe(value => {
+  tags = value
+})
 
 onMount(() => {
-    Api.getCosts().then((costs) => {
-        loadList(costs)
-    })
-    console.log("onMount");
+  FetchCosts()
+  // console.log("onMount");
 });
 
-function loadList(costs) {
-    dateGrpCosts = [] // clear all original items
-    costs.forEach((c) => {
-        // @sample "2022-05-30 16:02:21.322000000"
-        const time = c.date.split(' ')[1].split('.')[0].substr(0, 5)
-        const day = c.date.split(' ')[0].replace(/-/g, '/');
-        c = { time, day, ...c }
-        let dayArr = dateGrpCosts.find(o => (o.day === day));
-        if (!dayArr) {
-            dayArr = { day, costs: [] }
-            dateGrpCosts.push(dayArr)
-        }
-        dayArr.costs.push(c);
-    })
-    dateGrpCosts = dateGrpCosts // notify arr changed
+function delCost(cid) {
+  const confirm = window.confirm('确定删除该条记录？')
+  if (!confirm) return
+
+  Api.delCost(cid).then(() => {
+    FetchCosts()
+  })
+}
+
+function editCost(cost) {
+  sEditCost.set(cost)
 }
 </script>
 
@@ -38,17 +41,17 @@ function loadList(costs) {
         <div class="left">
             <div class="main">
                 <div class="price">-{cost.price}</div>
-                <div class="tag">{cost.tid}</div>
+                <div class="tag">{tags.find(o => o.tid === cost.tid)?.name}</div>
             </div>
-            <div class="sub">
-                <div class="note">{cost.note}</div>
+            <div class="sub" style:display={!cost.note ? 'none' : ''}>
+                <div class="note">{cost.note || ''}</div>
             </div>
         </div>
         <div class="right">
             <div class="date">{cost.time}</div>
             <div class="actions">
-                <span class="edit-btn">编辑</span>
-                <span class="del-btn">删除</span>
+                <span class="edit-btn" on:click={editCost(cost)}>编辑</span>
+                <span class="del-btn" on:click={delCost(cost.cid)}>删除</span>
             </div>
         </div>
     </div>
@@ -59,7 +62,7 @@ function loadList(costs) {
 
 <style>
 .list {
-  height: 100%;
+  height: calc(100% - 60px);
   overflow-y: auto;
 }
 
@@ -112,7 +115,6 @@ function loadList(costs) {
   display: flex;
   flex-direction: row;
   align-items: flex-end;
-  margin-bottom: 10px;
 }
 
 .item .main .price {
@@ -127,6 +129,7 @@ function loadList(costs) {
 }
 
 .item .sub {
+  margin-top: 10px;
 }
 
 .item .sub .note {

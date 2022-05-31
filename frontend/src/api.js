@@ -1,3 +1,5 @@
+import notify from "./notify";
+
 /**
  * API 请求封装
  * 
@@ -31,6 +33,22 @@ export async function logoutUser() {
     return await POST(`/user/logout`)
 }
 
+export async function addCost(price, tid, note) {
+    return await POST(`/cost/add`, {
+        price, tid, note
+    })
+}
+
+export async function delCost(cid) {
+    return await POST(`/cost/del`, { cid })
+}
+
+export async function editCost(cid, price, tid, note) {
+    return await POST(`/cost/edit`, {
+        cid, price, tid, note
+    })
+}
+
 /**
  * 封装统一的 fetch 函数
  */
@@ -51,7 +69,7 @@ export async function Fetch(input, init) {
     let json = await resp.json()
 
     if (!json.success) {
-        if (!!json.msg) alert(json.msg)
+        if (!!json.msg) notify(json.msg, 'e')
         throw json
     }
   

@@ -1,5 +1,6 @@
 <script>
 import { onMount } from "svelte";
+import { tags as sTags, selectedTid as sSelectedTid } from './stores'
 import * as Api from './api'
 
 let tags = []
@@ -8,15 +9,25 @@ let selectedID = null
 onMount(() => {
     Api.getTags().then(rTags => {
         tags = rTags
-        selectedID = rTags[0].tid
+
+        sTags.set(tags)
+        sSelectedTid.set(rTags[0].tid)
     })
 });
+
+sSelectedTid.subscribe(val => {
+    selectedID = val
+})
+
+function select(tid) {
+    sSelectedTid.set(tid)
+}
 </script>
 
 <div class="tags-wrap">
     <div class="tags">
         {#each tags as tag}
-        <div class="item" class:active={selectedID === tag.tid}>{tag.name}</div>
+        <div class="item" class:active={selectedID === tag.tid} on:click={select(tag.tid)}>{tag.name}</div>
         {/each}
     </div>
     <div class="add-btn">+</div>

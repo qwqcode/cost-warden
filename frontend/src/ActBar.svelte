@@ -10,7 +10,6 @@
 
 <style>
 .act-bar {
-    margin-top: 10px;
     margin-bottom: 0;
     display: flex;
     flex-direction: row;
@@ -18,6 +17,7 @@
     justify-content: center;
     width: 100%;
     height: 50px;
+    padding-top: 10px;
 }
 
 .item {

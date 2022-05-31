@@ -15,7 +15,7 @@ public class CostDAO extends BaseDAO {
         ArrayList<CostBean> costs = new ArrayList<CostBean>();
 
         try {
-            ResultSet rs = this.select("SELECT * FROM costs WHERE uid = ?", uid);
+            ResultSet rs = this.select("SELECT * FROM costs WHERE uid = ? ORDER BY date DESC", uid);
             while (rs.next()) {
                 costs.add(rsToBean(rs));
             }

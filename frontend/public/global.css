@@ -87,3 +87,44 @@ button {
 	background: #00A3FF;
 	color: #fff;
 }
+
+/* notify */
+.notify-wrap {
+  z-index: 999;
+  position: fixed;
+  right: 2%;
+  transform: translateX(-50%);
+  top: 15%;
+  width: 300px;
+  text-align: center;
+}
+
+.notify-item {
+  padding: 10px 19px;
+  background: rgba(0, 0, 0, 87%);
+  color: #fff;
+}
+
+.notify-item:not(:last-child) {
+  margin-bottom: 7px;
+}
+
+.notify-item.s {
+  color: #FFF;
+  background: #57d59f;
+}
+
+.notify-item.e {
+  color: #FFF;
+  background: #ff6f6c;
+}
+
+.notify-item.w {
+  color: #FFF;
+  background: #ffc721;
+}
+
+.notify-item.i {
+  color: #FFF;
+  background: #2ebcfc;
+}
