@@ -5,8 +5,8 @@ import * as Api from './api';
 const dispatch = createEventDispatcher();
 
 let type = 'login';
-let username = '';
-let password = '';
+let username = 'admin';
+let password = 'admin';
     
 // fields for signup
 let email = '';

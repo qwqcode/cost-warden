@@ -1,6 +1,7 @@
 <script>
 import List from "./List.svelte";
 import Login from "./Login.svelte";
+import Tag from "./Tag.svelte";
 
 let logined = false
 let sidebarBody;
@@ -30,6 +31,8 @@ function onSignuped() {
 		<div class="body">
 			{#if !logined}
 			<Login on:logined={onLogined} on:signuped={onSignuped}  />
+			{:else}
+			<Tag />
 			{/if}
 		</div>
 	</div>
