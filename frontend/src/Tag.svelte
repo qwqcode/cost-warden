@@ -7,13 +7,11 @@ let tags = []
 let selectedID = null
 
 onMount(() => {
-    Api.getTags().then(rTags => {
-        tags = rTags
-
-        sTags.set(tags)
-        sSelectedTid.set(rTags[0].tid)
-    })
 });
+
+sTags.subscribe(val => {
+    tags = val
+})
 
 sSelectedTid.subscribe(val => {
     selectedID = val
@@ -27,7 +25,7 @@ function select(tid) {
 <div class="tags-wrap">
     <div class="tags">
         {#each tags as tag}
-        <div class="item" class:active={selectedID === tag.tid} on:click={select(tag.tid)}>{tag.name}</div>
+        <div class="item" class:active={selectedID === tag.tid} on:click={() => { select(tag.tid) }}>{tag.name}</div>
         {/each}
     </div>
     <div class="add-btn">+</div>

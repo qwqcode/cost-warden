@@ -2,12 +2,18 @@
 import { FetchCosts, selectedTid as sSelectedTid, editCost as sEditCost } from './stores'
 import notify from './notify'
 import * as Api from './api'
+import { onDestroy } from 'svelte';
 
 let editCost = {}
 let priceEl = null
 let price = ''
 let note = ''
 let tid = 0
+
+onDestroy(() => {
+    price = ''
+    note = ''
+})
 
 sSelectedTid.subscribe(val => {
     tid = val

@@ -1,7 +1,7 @@
 <script>
 import * as Api from './api';
 import { onMount } from "svelte";
-import { tags as sTags, costs, editCost as sEditCost, FetchCosts } from './stores'
+import { tags as sTags, costs, editCost as sEditCost, FetchCosts, SwitchWorkSpace } from './stores'
 
 let dateGrpCosts = []
 let tags = []
@@ -28,6 +28,7 @@ function delCost(cid) {
 }
 
 function editCost(cost) {
+  SwitchWorkSpace('edit')
   sEditCost.set(cost)
 }
 </script>
@@ -50,8 +51,8 @@ function editCost(cost) {
         <div class="right">
             <div class="date">{cost.time}</div>
             <div class="actions">
-                <span class="edit-btn" on:click={editCost(cost)}>编辑</span>
-                <span class="del-btn" on:click={delCost(cost.cid)}>删除</span>
+                <span class="edit-btn" on:click={() => { editCost(cost) }}>编辑</span>
+                <span class="del-btn" on:click={() => { delCost(cost.cid) }}>删除</span>
             </div>
         </div>
     </div>

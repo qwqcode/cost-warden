@@ -49,6 +49,10 @@ export async function editCost(cid, price, tid, note) {
     })
 }
 
+export async function costStat() {
+    return await POST(`/cost/stat`)
+}
+
 /**
  * 封装统一的 fetch 函数
  */

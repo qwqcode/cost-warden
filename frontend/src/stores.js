@@ -1,10 +1,24 @@
 import { writable } from 'svelte/store';
 import * as Api from './api'
 
+export const workspace = writable('stat');
 export const tags = writable([]);
 export const selectedTid = writable(0);
 export const costs = writable([]);
 export const editCost = writable({});
+
+export function SwitchWorkSpace(name) {
+    if (name === 'add') editCost.set({});
+
+    workspace.set(name)
+}
+
+export function FetchTags() {
+    Api.getTags().then(rTags => {
+        tags.set(rTags)
+        selectedTid.set(rTags[0].tid)
+    })
+}
 
 export function FetchCosts() {
     Api.getCosts().then((costs) => {

@@ -1,11 +1,20 @@
 <script>
+import { SwitchWorkSpace, workspace as sWorkpace } from './stores'
 
+let curt = ''
+sWorkpace.subscribe(val => {
+    curt = val
+})
+
+function navigate(name) {
+    SwitchWorkSpace(name)
+}
 </script>
 
 <div class="act-bar">
-    <div class="item active">记录</div>
-    <div class="item">分析</div>
-    <div class="item">设置</div>
+    <div class="item" on:click={() => { navigate('add') }} class:active={curt === 'add'}>记录</div>
+    <div class="item" on:click={() => { navigate('stat') }} class:active={curt === 'stat'}>分析</div>
+    <div class="item" on:click={() => { navigate('setting') }} class:active={curt === 'setting'}>设置</div>
 </div>
 
 <style>

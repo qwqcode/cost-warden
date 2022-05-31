@@ -1,5 +1,7 @@
 <script>
+import { FetchTags, workspace as sWorkpace } from './stores'
 import ActBar from "./ActBar.svelte";
+import Chats from "./Chats.svelte";
 
 import CostAdd from "./CostAdd.svelte";
 import List from "./List.svelte";
@@ -9,11 +11,21 @@ import Tag from "./Tag.svelte";
 let logined = false
 let sidebarBody;
 
+// stat|add
+let workspace = ''
+
+sWorkpace.subscribe(val => {
+	workspace = val
+})
+
 function onLogined() {
 	logined = true
 	setTimeout(() => {
 		sidebarBody.style.display = ''
 	}, 300)
+
+	// Fetch tags
+	FetchTags()
 }
 
 function onSignuped() {
@@ -37,8 +49,12 @@ function onSignuped() {
 			<Login on:logined={onLogined} on:signuped={onSignuped}  />
 			{:else}
 			<div class="workspace">
+				{#if ['add', 'edit'].includes(workspace)}
 				<Tag />
 				<CostAdd />
+				{:else if workspace === 'stat'}
+				<Chats />
+				{/if}
 			</div>
 			{/if}
 		</div>
