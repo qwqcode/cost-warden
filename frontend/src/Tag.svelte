@@ -28,7 +28,7 @@ onMount(() => {
     flex-direction: row;
     width: 100%;
     height: 57px;
-    margin: 30px;
+    margin-bottom: 30px;
 }
 
 .add-btn {

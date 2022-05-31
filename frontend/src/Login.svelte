@@ -61,35 +61,11 @@ function switchType() {
         justify-content: center;
     }
 
-    input {
-        width: 270px;
-        line-height: 37px;
-        padding: 0 20px;
-        background: #F1F1F1;
-        border: 0;
-        border-left: 5px solid transparent;
-        outline: none;
-    }
-
-    input:focus {
-        border-left-color: #00A3FF;
-    }
-
     .bottom {
         margin-top: 20px;
         width: 270px;
         display: flex;
         justify-content: space-between;
-    }
-
-    button {
-        cursor: pointer;
-        display: inline-block;
-        width: 80px;
-        height: 37px;
-        border: 0;
-        background: #00A3FF;
-        color: #fff;
     }
 
     .switch-btn {

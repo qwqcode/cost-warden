@@ -62,3 +62,28 @@ button:not(:disabled):active {
 button:focus {
 	border-color: #666;
 }
+
+/* Common input style */
+input {
+	width: 270px;
+	line-height: 37px;
+	padding: 0 20px;
+	background: #F1F1F1;
+	border: 0;
+	border-left: 5px solid transparent;
+	outline: none;
+}
+
+input:focus {
+	border-left-color: #00A3FF;
+}
+
+button {
+	cursor: pointer;
+	display: inline-block;
+	width: 80px;
+	height: 37px;
+	border: 0;
+	background: #00A3FF;
+	color: #fff;
+}

@@ -1,4 +1,5 @@
 <script>
+import CostAdd from "./CostAdd.svelte";
 import List from "./List.svelte";
 import Login from "./Login.svelte";
 import Tag from "./Tag.svelte";
@@ -32,7 +33,10 @@ function onSignuped() {
 			{#if !logined}
 			<Login on:logined={onLogined} on:signuped={onSignuped}  />
 			{:else}
-			<Tag />
+			<div class="workspace">
+				<Tag />
+				<CostAdd />
+			</div>
 			{/if}
 		</div>
 	</div>
@@ -89,5 +93,10 @@ function onSignuped() {
 	.body {
 		display: flex;
 		flex: 1;
+	}
+
+	.body .workspace {
+		padding: 30px;
+		width: 100%;
 	}
 </style>
