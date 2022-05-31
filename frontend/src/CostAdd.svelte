@@ -22,7 +22,7 @@
 
 .text {
     font-size: 20px;
-    margin-bottom: 20px;
+    margin-bottom: 2em;
 }
 
 .form {

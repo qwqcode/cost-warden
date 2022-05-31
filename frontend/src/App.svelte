@@ -1,4 +1,6 @@
 <script>
+import ActBar from "./ActBar.svelte";
+
 import CostAdd from "./CostAdd.svelte";
 import List from "./List.svelte";
 import Login from "./Login.svelte";
@@ -25,6 +27,7 @@ function onSignuped() {
 			<div class="brand" style:height="{!logined ? '100%' : '120px'}"></div>
 			<div class="sidebar-body" bind:this={sidebarBody} style="display: none;">
 				{#if logined}
+					<ActBar />
 					<List />
 				{/if}
 			</div>
