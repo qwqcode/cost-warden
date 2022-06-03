@@ -4,12 +4,15 @@ import { tags as sTags, costs, editCost as sEditCost, FetchCosts, SwitchWorkSpac
 import { onMount } from "svelte";
 
 let dateGrpCosts = []
+let priceSum = 0
 let tags = []
 let filterConds = []
 
 costs.subscribe(value => {
   dateGrpCosts = value
+  recalcSum()
 })
+
 sTags.subscribe(value => {
   tags = value
 })
@@ -42,14 +45,26 @@ function filterByDate(type, grpItem) {
 
   const nFilterConds = filterConds.filter(o => !type2Fields[type].includes(o.name))
   type2Fields[type].forEach((field) => { nFilterConds.push({ name: field, value: grpItem[field] }) })
+
+  priceSum = ''
   filterConds = nFilterConds
   FetchCosts(filterConds)
 }
 
 function filterByTid(tid) {
   filterConds.push({ name: 'tid', value: tid })
+  priceSum = ''
   filterConds = filterConds
   FetchCosts(filterConds)
+}
+
+function recalcSum() {
+  // 计算总消费
+  priceSum = dateGrpCosts.reduce((sum, item) => {
+    return sum + item.costs.reduce((sum, cost) => {
+      return sum + cost.price
+    }, 0)
+  }, 0)
 }
 </script>
 
@@ -85,13 +100,18 @@ function filterByTid(tid) {
     {/each}
 </div>
 
-<div class="filter-list">
-  {#each filterConds as item}
-    <div class="cond-item" on:click={() => {
-      filterConds = filterConds.filter(o => o.name !== item.name)
-      FetchCosts(filterConds)
-    }}>{item.name.substr(0, 1).toUpperCase()} = {item.value}</div>
-  {/each}
+<div class="filter-list-wrap">
+  <div class="filter-list" style:display={!filterConds.length ? 'none' : ''}>
+    {#each filterConds as item}
+      <div class="cond-item" on:click={() => {
+        filterConds = filterConds.filter(o => o.name !== item.name)
+        FetchCosts(filterConds)
+      }}>{item.name.substr(0, 1).toUpperCase()} = {(item.name !== 'tid') ? item.value : tags.find(o => o.tid === item.value).name}</div>
+    {/each}
+  </div>
+  <div class="count">
+    <div class="price">-{priceSum}</div>
+  </div>
 </div>
 
 <style>
@@ -199,12 +219,15 @@ function filterByTid(tid) {
   margin-right: 13px;
 }
 
-.filter-list {
-  display: flex;
-  flex-direction: row;
+.filter-list-wrap {
   position: absolute;
   right: 10px;
   top: 70px;
+}
+
+.filter-list {
+  display: flex;
+  flex-direction: row;
 }
 
 .filter-list .cond-item {
@@ -219,5 +242,16 @@ function filterByTid(tid) {
 
 .filter-list .cond-item:not(:last-child) {
   margin-right: 10px;
+}
+
+.filter-list-wrap .count {
+  display: inline-block;
+  float: right;
+  font-size: 20px;
+  background: #d92929;
+  color: #fff;
+  margin-top: 5px;
+  padding: 4px 10px;
+  text-align: right;
 }
 </style>

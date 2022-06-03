@@ -22,6 +22,7 @@ function showSearch() {
 
 function hideSearch() {
     isSearchShow = false
+    searchVal = ''
 }
 
 let searchTimer = null
