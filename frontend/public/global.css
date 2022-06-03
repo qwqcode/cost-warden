@@ -128,3 +128,17 @@ button {
   color: #FFF;
   background: #2ebcfc;
 }
+
+.fade-in {
+  animation: animFadeIn both .3s
+}
+
+@keyframes animFadeIn {
+	0% {
+	  opacity: 0
+	}
+  
+	to {
+	  opacity: 1
+	}
+}  

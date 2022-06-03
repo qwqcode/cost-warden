@@ -54,7 +54,7 @@ function save() {
 }
 </script>
 
-<div class="cost-add">
+<div class="cost-add fade-in">
     <div class="text">{#if !editCost.cid}记录{:else}修改{/if}一笔消费</div>
     <div class="form">
         <input type="text" bind:value={price} bind:this={priceEl} placeholder="价格" autocomplete="off">

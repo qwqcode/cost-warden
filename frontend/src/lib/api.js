@@ -13,8 +13,16 @@ export async function login(username, password) {
 }
 
 export async function signup(username, email, password, rePassword) {
-    const params = { username, email, password, rePassword }
+    const params = { username, email, password, re_password: rePassword }
     return await POST(`/user/signup`, params)
+}
+
+export async function logout() {
+    return await POST(`/user/logout`)
+}
+
+export async function getUserStatus() {
+    return await POST(`/user/status`);
 }
 
 export async function getCosts(filter) {
@@ -55,6 +63,14 @@ export async function costStat() {
     return await POST(`/cost/stat`)
 }
 
+export async function delTag(tid) {
+    return await POST(`/tag/del`, { tid })
+}
+
+export async function addTag(name) {
+    return await POST(`/tag/add`, { name })
+}
+
 /**
  * 封装统一的 fetch 函数
  */
@@ -68,8 +84,10 @@ export async function Fetch(input, init) {
     // 请求操作
     const resp = await fetch(API_BASE + input, init)
   
-    if (!resp.ok)
-      throw new Error(`请求错误 ${resp.status}`)
+    if (!resp.ok) {
+        notify(`请求错误 ${resp.status}`, 'e')
+        throw new Error(`请求错误 ${resp.status}`)
+    }
   
     // 解析获取响应的 json
     let json = await resp.json()
@@ -101,7 +119,7 @@ export async function POST(url, data) {
   
 /** 公共 GET 请求 */
 export async function GET(url, data) {
-    const json = await Fetch(ctx, url + (data ? (`?${new URLSearchParams(data)}`) : ''), {
+    const json = await Fetch(url + (data ? (`?${new URLSearchParams(data)}`) : ''), {
       method: 'GET',
     })
     return json.data

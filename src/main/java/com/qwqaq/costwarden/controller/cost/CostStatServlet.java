@@ -2,6 +2,7 @@ package com.qwqaq.costwarden.controller.cost;
 
 import com.qwqaq.costwarden.controller.BaseController;
 import com.qwqaq.costwarden.model.CostChartItemBean;
+import com.qwqaq.costwarden.model.UserBean;
 import com.qwqaq.costwarden.query.Query;
 
 import javax.servlet.*;
@@ -14,10 +15,12 @@ import java.util.ArrayList;
 public class CostStatServlet extends BaseController {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        UserBean user = GetUserByReq(request);
+
         CostStatRespData data = new CostStatRespData();
-        data.setYearPie(Query.getCostDAO().getCostStatPie("year"));
-        data.setMonthPie(Query.getCostDAO().getCostStatPie("month"));
-        data.setPriceMonths(Query.getCostDAO().getCostStatMonths());
+        data.setYearPie(Query.getCostDAO().getCostStatPie("year", user.getUid()));
+        data.setMonthPie(Query.getCostDAO().getCostStatPie("month", user.getUid()));
+        data.setPriceMonths(Query.getCostDAO().getCostStatMonths(user.getUid()));
 
         RespData(response, data);
     }

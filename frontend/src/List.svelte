@@ -2,6 +2,7 @@
 import * as Api from './lib/api';
 import { tags as sTags, costs, editCost as sEditCost, FetchCosts, SwitchWorkSpace } from './lib/stores'
 import { onMount } from "svelte";
+import notify from './lib/notify'
 
 let dateGrpCosts = []
 let priceSum = 0
@@ -27,6 +28,7 @@ function delCost(cid) {
   if (!confirm) return
 
   Api.delCost(cid).then(() => {
+    notify('删除成功', 's')
     FetchCosts()
   })
 }
@@ -65,10 +67,11 @@ function recalcSum() {
       return sum + cost.price
     }, 0)
   }, 0)
+  priceSum = priceSum?.toFixed(2) || '-'
 }
 </script>
 
-<div class="list">
+<div class="list fade-in">
     {#each dateGrpCosts as grpItem}
     <div class="date">
       <span on:click={()=>{filterByDate('year', grpItem)}}>{grpItem.year}</span>/
@@ -109,9 +112,12 @@ function recalcSum() {
       }}>{item.name.substr(0, 1).toUpperCase()} = {(item.name !== 'tid') ? item.value : tags.find(o => o.tid === item.value).name}</div>
     {/each}
   </div>
-  <div class="count">
-    <div class="price">-{priceSum}</div>
-  </div>
+</div>
+
+<div class="counter">
+  {#if !!priceSum}
+  <div class="price fade-in">-{priceSum}</div>
+  {/if}
 </div>
 
 <style>
@@ -232,7 +238,7 @@ function recalcSum() {
 
 .filter-list .cond-item {
   background: #f1f1f1;
-  padding: 4px 10px;
+  padding: 2px 6px;
   cursor: pointer;
 }
 
@@ -241,17 +247,22 @@ function recalcSum() {
 }
 
 .filter-list .cond-item:not(:last-child) {
-  margin-right: 10px;
+  margin-right: 5px;
 }
 
-.filter-list-wrap .count {
+.counter {
+  top: -32px;
+  right: -5px;
+  position: absolute;
   display: inline-block;
-  float: right;
   font-size: 20px;
-  background: #d92929;
+  background: rgba(217, 41, 41, 0.865);
   color: #fff;
   margin-top: 5px;
   padding: 4px 10px;
   text-align: right;
+  transition: all .3s;
+  min-height: 20px;
+  min-width: 20px;
 }
 </style>

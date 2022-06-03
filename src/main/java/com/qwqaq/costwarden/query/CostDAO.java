@@ -158,17 +158,18 @@ public class CostDAO extends BaseDAO {
         }
     }
 
-    public ArrayList<CostChartItemBean> getCostStatPie(String type) {
+    public ArrayList<CostChartItemBean> getCostStatPie(String type, int uid) {
         ArrayList<CostChartItemBean> arr = new ArrayList<>();
 
         try {
             ResultSet rs = this.select("SELECT t.`name` as 'name', SUM(price) as 'value' " +
                     "FROM costs c " +
                     "JOIN tags t ON c.tid = t.tid " +
-                    "WHERE YEAR(c.date) = YEAR(CURDATE()) " +
+                    "WHERE uid = ? " +
+                    "AND YEAR(c.date) = YEAR(CURDATE()) " +
                     ((type.equals("month")) ? "AND MONTH(c.date) = MONTH(CURDATE()) " : "") +
                     "GROUP BY t.`name` " +
-                    "ORDER BY `value` DESC");
+                    "ORDER BY `value` DESC", uid);
             while (rs.next()) {
                 CostChartItemBean item = new CostChartItemBean();
                 item.setName(rs.getString("name"));
@@ -184,7 +185,7 @@ public class CostDAO extends BaseDAO {
         return arr;
     }
 
-    public ArrayList<CostChartItemBean> getCostStatMonths() {
+    public ArrayList<CostChartItemBean> getCostStatMonths(int uid) {
         HashMap<Integer, BigDecimal> month2price = new HashMap<>();
 
         for (int y = 1; y <= 12; y++) {
@@ -196,8 +197,9 @@ public class CostDAO extends BaseDAO {
                     "SELECT MONTH(date) AS 'name', SUM(price) AS 'value' " +
                             "FROM costs " +
                             "WHERE YEAR(date) = YEAR(CURDATE()) " +
+                            "AND uid = ? " +
                             "GROUP BY MONTH(date) " +
-                            "ORDER BY `name` ASC");
+                            "ORDER BY `name` ASC", uid);
             while (rs.next()) {
                 month2price.put(rs.getInt("name"), rs.getBigDecimal("value"));
             }

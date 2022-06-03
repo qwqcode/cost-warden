@@ -1,4 +1,6 @@
 <script>
+import * as Api from './lib/api';
+
 import { SwitchWorkSpace, workspace as sWorkpace, FetchCosts } from './lib/stores'
 
 let curt = ''
@@ -65,16 +67,22 @@ function search(keywords) {
 
     FetchCosts(cond)
 }
+
+function logout() {
+    Api.logout().then(() => {
+        location.reload()
+    })
+}
 </script>
 
-<div class="act-bar" style:display={isSearchShow ? 'none' : ''}>
+<div class="act-bar fade-in" style:display={isSearchShow ? 'none' : ''}>
     <div class="item" on:click={() => { navigate('add') }} class:active={curt === 'add'}>记录</div>
     <div class="item" on:click={() => { navigate('stat') }} class:active={curt === 'stat'}>分析</div>
     <div class="item" on:click={() => { showSearch() }}>搜索</div>
-    <div class="item" on:click={() => { navigate('setting') }} class:active={curt === 'setting'}>设置</div>
+    <div class="item" on:click={() => { logout() }}>注销</div>
 </div>
 
-<div class="search-bar" style:display={!isSearchShow ? 'none' : ''}>
+<div class="search-bar fade-in" style:display={!isSearchShow ? 'none' : ''}>
     <input type="text" placeholder="输入关键字..." bind:value={searchVal} bind:this={searchEl}>
     <div class="close-btn" on:click={() => { hideSearch() }}>×</div>
 </div>
@@ -92,13 +100,14 @@ function search(keywords) {
 }
 
 .act-bar .item {
+    display: flex;
+    align-items: center;
     font-size: 20px;
-    position: relative;
     cursor: pointer;
 }
 
 .act-bar .item:not(:last-child) {
-    margin-right: 2.4em;
+    margin-right: 1.6em;
 }
 
 .act-bar .item:hover {
@@ -106,15 +115,15 @@ function search(keywords) {
 }
 
 .act-bar .item.active::before {
-    position: absolute;
     content: '';
-    display: block;
+    display: inline-block;
+    margin-top: 10px;
+    margin-right: 10px;
     width: 11px;
     height: 11px;
-    left: -20px;
-    top: 50%;
     transform: translateY(-50%);
     background: #00A3FF;
+    animation: animFadeIn both .3s;
 }
 
 .search-bar {

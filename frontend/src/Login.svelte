@@ -1,16 +1,26 @@
 <script>
-import { createEventDispatcher } from 'svelte';
+import { createEventDispatcher, onMount } from 'svelte';
 import * as Api from './lib/api'; 
+import notify from './lib/notify';
 
 const dispatch = createEventDispatcher();
 
 let type = 'login';
-let username = 'admin';
-let password = 'admin';
-    
+let username = '';
+let password = '';
+
 // fields for signup
 let email = '';
 let rePassword = '';
+
+onMount(() => {
+    // 登录状态检测跳转
+    Api.getUserStatus().then((status) => {
+        if (status.isLogin) {
+            dispatch('logined');
+        }
+    })
+})
 
 // 登录
 function login() {
@@ -22,7 +32,8 @@ function login() {
 // 注册
 function signup() {
     Api.signup(username, email, password, rePassword).then(() => {
-        dispatch('signuped');
+        notify('注册成功', 's');
+        type = 'login'
     })
 }
 
@@ -31,7 +42,7 @@ function switchType() {
 }
 </script>
 
-<div class="login">
+<form class="login" on:submit|preventDefault={() => { type === 'login' ? login() : signup() }}>
     {#if type === 'login'}
     <input type="text" bind:value={username} placeholder="用户名" autocomplete="off">
     <input type="password" bind:value={password} placeholder="密码">
@@ -43,14 +54,14 @@ function switchType() {
     {/if}
     <div class="bottom">
         {#if type === 'login'}
-        <button type="submit" on:click={login}>登录</button>
+        <button type="submit">登录</button>
         <button class="switch-btn" on:click="{switchType}">注册</button>
         {:else}
-        <button type="submit" on:click={signup}>注册</button>
+        <button type="submit">注册</button>
         <button class="switch-btn" on:click="{switchType}">登录</button>
         {/if}
     </div>
-</div>
+</form>
 
 <style>
     .login {

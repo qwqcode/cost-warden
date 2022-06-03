@@ -19,7 +19,7 @@ onMount(() => {
 })
 </script>
 
-<div class="charts">
+<div class="charts fade-in">
     <div class="scene scene-1">
         <div class="chart-item">
             <h2>本月开支占比</h2>

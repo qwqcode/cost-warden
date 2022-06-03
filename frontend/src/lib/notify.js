@@ -8,7 +8,7 @@ if (!notifyWrap) {
 // type=s|e|i|w
 export default function notify(msg, type = 'i') {
     const notify = document.createElement('div')
-    notify.className = 'notify-item'
+    notify.className = 'notify-item fade-in'
     notify.innerHTML = msg
     notify.classList.add(type)
     notifyWrap.appendChild(notify)

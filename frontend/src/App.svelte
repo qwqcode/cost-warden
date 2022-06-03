@@ -27,10 +27,6 @@ function onLogined() {
 	// Fetch tags
 	FetchTags()
 }
-
-function onSignuped() {
-	
-}
 </script>
 
 <main>
@@ -46,7 +42,7 @@ function onSignuped() {
 		</div>
 		<div class="body">
 			{#if !logined}
-			<Login on:logined={onLogined} on:signuped={onSignuped}  />
+			<Login on:logined={onLogined} />
 			{:else}
 			<div class="workspace">
 				{#if ['add', 'edit'].includes(workspace)}
@@ -73,8 +69,8 @@ function onSignuped() {
 	.app {
 		display: flex;
 		flex-direction: row;
-		width: 80vw;
-		height: 80vh;
+		width: 85vw;
+		height: 85vh;
 		background: #fff;
 	}
 
