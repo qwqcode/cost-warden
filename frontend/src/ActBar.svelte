@@ -71,6 +71,7 @@ function search(keywords) {
 function logout() {
     Api.logout().then(() => {
         location.reload()
+        localStorage.removeItem('user')
     })
 }
 </script>
