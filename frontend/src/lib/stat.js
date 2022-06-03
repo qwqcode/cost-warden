@@ -1,19 +1,8 @@
 export function InitPieChart(chartDom, data) {
-  console.log(chartDom, data)
   var myChart = echarts.init(chartDom);
-  var option;
 
   var datas = [ data ];
-  option = {
-    title: {
-      text: "开支占比",
-      left: "center",
-      textStyle: {
-        color: "#999",
-        fontWeight: "normal",
-        fontSize: 14,
-      },
-    },
+  var option = {
     series: datas.map(function (data, idx) {
       var top = idx * 33.3;
       return {
@@ -61,5 +50,42 @@ export function InitPieChart(chartDom, data) {
     }),
   };
 
+  option && myChart.setOption(option);
+}
+
+export function InitMonthlyChart(chartDom, data) {
+  var myChart = echarts.init(chartDom);
+
+  var option = {
+    xAxis: {
+      type: 'category',
+      data: [
+        '一月',
+        '二月',
+        '三月',
+        '四月',
+        '五月',
+        '六月',
+        '七月',
+        '八月',
+        '九月',
+        '十月',
+        '十一月',
+        '十二月'
+      ],
+      name: '月份'
+    },
+    yAxis: {
+      type: 'value',
+      name: '总消费 (元)'
+    },
+    series: [
+      {
+        data: data.map((o) => Number(o.value)),
+        type: 'bar'
+      }
+    ]
+  };
+  
   option && myChart.setOption(option);
 }

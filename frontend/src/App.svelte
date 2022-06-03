@@ -117,5 +117,6 @@ function onSignuped() {
 	.body .workspace {
 		padding: 30px;
 		width: 100%;
+		overflow-y: auto;
 	}
 </style>
