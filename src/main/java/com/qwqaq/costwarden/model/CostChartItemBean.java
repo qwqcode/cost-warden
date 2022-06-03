@@ -3,9 +3,17 @@ package com.qwqaq.costwarden.model;
 /**
  * 饼图
  */
-public class CostStatBean {
+public class CostChartItemBean {
     private String name;
     private String value;
+
+    public CostChartItemBean() {
+    }
+
+    public CostChartItemBean(String name, String value) {
+        this.name = name;
+        this.value = value;
+    }
 
     public String getName() {
         return name;

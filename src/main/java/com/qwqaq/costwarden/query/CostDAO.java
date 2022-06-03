@@ -3,11 +3,13 @@ package com.qwqaq.costwarden.query;
 import com.google.gson.Gson;
 import com.qwqaq.costwarden.model.*;
 
+import java.math.BigDecimal;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
 
 public class CostDAO extends BaseDAO {
     private ArrayList<CostBean> costsSelectQuery(String sql, Object ...args) {
@@ -32,7 +34,8 @@ public class CostDAO extends BaseDAO {
     }
 
     public ArrayList<CostBean> getCostsByConditions(int uid, String conditionsJson) {
-        if (conditionsJson == null) return getCostsByUid(uid);
+        if (conditionsJson == null)
+            return getCostsByUid(uid);
 
         CostFilterBean[] condArr;
         try {
@@ -40,6 +43,9 @@ public class CostDAO extends BaseDAO {
         } catch (Exception e) {
             return getCostsByUid(uid);
         }
+
+        if (condArr == null || condArr.length <= 0)
+            return getCostsByUid(uid);
 
         ArrayList<Object> args = new ArrayList<>();
         StringBuilder sql = new StringBuilder("SELECT * FROM costs WHERE uid = ?");
@@ -152,18 +158,19 @@ public class CostDAO extends BaseDAO {
         }
     }
 
-    public ArrayList<CostStatBean> getCostStatData() {
-        ArrayList<CostStatBean> arr = new ArrayList<>();
+    public ArrayList<CostChartItemBean> getCostStatPie(String type) {
+        ArrayList<CostChartItemBean> arr = new ArrayList<>();
 
         try {
             ResultSet rs = this.select("SELECT t.`name` as 'name', SUM(price) as 'value' " +
                     "FROM costs c " +
                     "JOIN tags t ON c.tid = t.tid " +
-                    "WHERE YEAR(c.date) = '2022' " +
+                    "WHERE YEAR(c.date) = YEAR(CURDATE()) " +
+                    ((type.equals("month")) ? "AND MONTH(c.date) = MONTH(CURDATE()) " : "") +
                     "GROUP BY t.`name` " +
                     "ORDER BY `value` DESC");
             while (rs.next()) {
-                CostStatBean item = new CostStatBean();
+                CostChartItemBean item = new CostChartItemBean();
                 item.setName(rs.getString("name"));
                 item.setValue(rs.getString("value"));
                 arr.add(item);
@@ -172,6 +179,37 @@ public class CostDAO extends BaseDAO {
             e.printStackTrace();
         } finally {
             this.closeConn();
+        }
+
+        return arr;
+    }
+
+    public ArrayList<CostChartItemBean> getCostStatMonths() {
+        HashMap<Integer, BigDecimal> month2price = new HashMap<>();
+
+        for (int y = 1; y <= 12; y++) {
+            month2price.put(y, BigDecimal.valueOf(0));
+        }
+
+        try {
+            ResultSet rs = this.select(
+                    "SELECT MONTH(date) AS 'name', SUM(price) AS 'value' " +
+                            "FROM costs " +
+                            "WHERE YEAR(date) = YEAR(CURDATE()) " +
+                            "GROUP BY MONTH(date) " +
+                            "ORDER BY `name` ASC");
+            while (rs.next()) {
+                month2price.put(rs.getInt("name"), rs.getBigDecimal("value"));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            this.closeConn();
+        }
+
+        ArrayList<CostChartItemBean> arr = new ArrayList<>();
+        for (int y = 1; y <= 12; y++) {
+            arr.add(new CostChartItemBean(String.valueOf(y), month2price.get(y).toString()));
         }
 
         return arr;
