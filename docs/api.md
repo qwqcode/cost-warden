@@ -17,6 +17,9 @@
   - note 笔记
 
 - POST `/cost/get` 查询
+  - filter 筛选条件 (JSON Array)
+  
+    示例：`[{ "name": "note", "value":"KeyWords" }]`
 
 ### Tag 标签
 
@@ -41,7 +44,6 @@
 - POST `/user/get` 获取用户个人数据
 - POST `/user/logout` 注销当前用户
 
-
 ## 公开接口
 
 - POST `/user/login` 登录
@@ -53,3 +55,5 @@
   - email 邮箱
   - password 密码
   - re_password 确认密码
+
+- POST `/user/status` 登录状态

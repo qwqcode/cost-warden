@@ -1,9 +1,7 @@
 package com.qwqaq.costwarden.query;
 
-import com.qwqaq.costwarden.model.CostBean;
-import com.qwqaq.costwarden.model.CostStatBean;
-import com.qwqaq.costwarden.model.TagBean;
-import com.qwqaq.costwarden.model.UserBean;
+import com.google.gson.Gson;
+import com.qwqaq.costwarden.model.*;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -12,11 +10,11 @@ import java.util.ArrayList;
 import java.util.Calendar;
 
 public class CostDAO extends BaseDAO {
-    public ArrayList<CostBean> getCostsByUid(int uid) {
+    private ArrayList<CostBean> costsSelectQuery(String sql, Object ...args) {
         ArrayList<CostBean> costs = new ArrayList<CostBean>();
 
         try {
-            ResultSet rs = this.select("SELECT * FROM costs WHERE uid = ? ORDER BY date DESC", uid);
+            ResultSet rs = this.select(sql, args);
             while (rs.next()) {
                 costs.add(rsToBean(rs));
             }
@@ -27,6 +25,69 @@ public class CostDAO extends BaseDAO {
         }
 
         return costs;
+    }
+
+    public ArrayList<CostBean> getCostsByUid(int uid) {
+        return costsSelectQuery("SELECT * FROM costs WHERE uid = ? ORDER BY date DESC", uid);
+    }
+
+    public ArrayList<CostBean> getCostsByConditions(int uid, String conditionsJson) {
+        if (conditionsJson == null) return getCostsByUid(uid);
+
+        CostFilterBean[] condArr;
+        try {
+            condArr = new Gson().fromJson(conditionsJson, CostFilterBean[].class);
+        } catch (Exception e) {
+            return getCostsByUid(uid);
+        }
+
+        ArrayList<Object> args = new ArrayList<>();
+        StringBuilder sql = new StringBuilder("SELECT * FROM costs WHERE uid = ?");
+        args.add(uid);
+
+        for (CostFilterBean cond : condArr) {
+            switch (cond.getName()) {
+                case "year":
+                    sql.append(" AND YEAR(date) = ?");
+                    args.add(cond.getValue());
+                    break;
+                case "month":
+                    sql.append(" AND MONTH(date) = ?");
+                    args.add(cond.getValue());
+                    break;
+                case "day":
+                    sql.append(" AND DAY(date) = ?");
+                    args.add(cond.getValue());
+                    break;
+                case "note":
+                    sql.append(" AND note LIKE ?");
+                    args.add("%"+cond.getValue()+"%");
+                    break;
+                case "tid":
+                    sql.append(" AND tid = ?");
+                    args.add(cond.getValue());
+                    break;
+            }
+        }
+
+        sql.append(" ORDER BY date DESC");
+        return costsSelectQuery(sql.toString(), args.toArray());
+    }
+
+    public ArrayList<CostBean> getCostsByNote(int note, int uid) {
+        return costsSelectQuery("SELECT * FROM costs WHERE uid = ? AND note LIKE ? ORDER BY date DESC", uid, "%"+note+"%");
+    }
+
+    public ArrayList<CostBean> getCostsByYear(int year, int uid) {
+        return costsSelectQuery("SELECT * FROM costs WHERE uid = ? AND YEAR(date) = ? ORDER BY date DESC", uid, year);
+    }
+
+    public ArrayList<CostBean> getCostsByMonth(int year, int month, int uid) {
+        return costsSelectQuery("SELECT * FROM costs WHERE uid = ? AND YEAR(date) = ? AND MONTH(date) = ? ORDER BY date DESC", uid, year, month);
+    }
+
+    public ArrayList<CostBean> getCostsByDay(int year, int month, int day, int uid) {
+        return costsSelectQuery("SELECT * FROM costs WHERE uid = ? AND YEAR(date) = ? AND MONTH(date) = ? AND DAY(date) = ? ORDER BY date DESC", uid, year, month, day);
     }
 
     public CostBean getCostByCid(int cid) {

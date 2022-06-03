@@ -16,8 +16,10 @@ import java.util.ArrayList;
 public class CostGetServlet extends BaseController {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String conditions = req.getParameter("filter");
+
         UserBean user = GetUserByReq(req);
-        ArrayList<CostBean> costs = Query.getCostDAO().getCostsByUid(user.getUid());
+        ArrayList<CostBean> costs = Query.getCostDAO().getCostsByConditions(user.getUid(), conditions);
 
         RespData(resp, costs);
     }
