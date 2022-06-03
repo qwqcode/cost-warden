@@ -64,10 +64,6 @@ function switchType() {
     {#if type === 'login'}
     <input type="text" bind:value={username} placeholder="用户名" autocomplete="off">
     <input type="password" bind:value={password} placeholder="密码">
-    <!-- <div class="remember-me">
-        <input type="checkbox" id="remember_me">
-        <label for="remember_me">保持登录</label>
-    </div> -->
     {:else}
     <input type="text" bind:value={username} placeholder="用户名" autocomplete="off">
     <input type="text" bind:value={email} placeholder="邮箱" autocomplete="off">
@@ -106,22 +102,5 @@ function switchType() {
         background: transparent;
         color: #000;
         width: fit-content;
-    }
-
-    .remember-me {
-        width: 270px;
-        margin-top: 5px;
-        margin-bottom: -5px;
-    }
-
-    .remember-me input {
-        width: 16px;
-        display: inline-block;
-    }
-
-    .remember-me label {
-        display: inline-block;
-        font-size: 14px;
-        margin-left: 2px;
     }
 </style>

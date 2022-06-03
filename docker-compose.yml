@@ -1,0 +1,26 @@
+version: '3.5'
+
+services:
+  cost-warden:
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    ports:
+      - 8089:8080
+    image: cost-warden
+    restart: unless-stopped
+    tty: true
+
+  db:
+    image: mysql:5.7
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: 'costwarden'
+      MYSQL_ROOT_PASSWORD: '123456'
+      MYSQL_USER: 'costwarden'
+      MYSQL_PASSWORD: 'costwarden'
+      SERVICE_TAGS: dev
+      SERVICE_NAME: mysql
+    volumes:
+      - ./mysql.cnf:/etc/mysql/my.cnf
+      - ./docs/initdb.d/:/docker-entrypoint-initdb.d/

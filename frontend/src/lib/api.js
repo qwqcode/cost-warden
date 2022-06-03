@@ -5,7 +5,6 @@ import notify from "./notify";
  * 
  * @note 文档参考 /docs/api.md
  */
-export const API_BASE = 'http://localhost:8080/cost_warden_war_exploded';
 
 export async function login(username, password) {
     const params = { username, password }
@@ -82,7 +81,7 @@ export async function Fetch(input, init) {
     }
 
     // 请求操作
-    const resp = await fetch(API_BASE + input, init)
+    const resp = await fetch((process?.env?.API_BASE || '') + input, init)
   
     if (!resp.ok) {
         notify(`请求错误 ${resp.status}`, 'e')

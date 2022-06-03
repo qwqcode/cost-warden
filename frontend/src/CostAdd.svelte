@@ -1,5 +1,6 @@
 <script>
-import { FetchCosts, selectedTid as sSelectedTid, editCost as sEditCost } from './lib/stores'
+import { FetchCosts, FetchTags } from './lib/act'
+import { selectedTid as sSelectedTid, editCost as sEditCost } from './lib/stores'
 import notify from './lib/notify'
 import * as Api from './lib/api'
 import { onDestroy } from 'svelte';

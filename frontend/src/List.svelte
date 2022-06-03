@@ -1,6 +1,7 @@
 <script>
 import * as Api from './lib/api';
-import { tags as sTags, costs, editCost as sEditCost, FetchCosts, SwitchWorkSpace } from './lib/stores'
+import { FetchCosts, SwitchWorkSpace } from './lib/act'
+import { tags as sTags, costs, editCost as sEditCost } from './lib/stores'
 import { onMount } from "svelte";
 import notify from './lib/notify'
 
@@ -19,7 +20,6 @@ sTags.subscribe(value => {
 })
 
 onMount(() => {
-  FetchCosts()
   // console.log("onMount");
 });
 

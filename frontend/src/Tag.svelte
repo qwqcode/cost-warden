@@ -1,6 +1,7 @@
 <script>
 import { onMount } from "svelte";
-import { tags as sTags, selectedTid as sSelectedTid, FetchTags } from './lib/stores'
+import { FetchCosts, FetchTags } from './lib/act'
+import { tags as sTags, selectedTid as sSelectedTid } from './lib/stores'
 import * as Api from './lib/api'
 import notify from './lib/notify'
 
