@@ -5,6 +5,7 @@ import { onMount } from "svelte";
 
 let dateGrpCosts = []
 let tags = []
+let filterConds = []
 
 costs.subscribe(value => {
   dateGrpCosts = value
@@ -31,18 +32,41 @@ function editCost(cost) {
   SwitchWorkSpace('edit')
   sEditCost.set(cost)
 }
+
+function filterByDate(type, grpItem) {
+  const type2Fields = {
+    year: ['year'],
+    month: ['year', 'month'],
+    day: ['year', 'month', 'day']
+  };
+
+  const nFilterConds = filterConds.filter(o => !type2Fields[type].includes(o.name))
+  type2Fields[type].forEach((field) => { nFilterConds.push({ name: field, value: grpItem[field] }) })
+  filterConds = nFilterConds
+  FetchCosts(filterConds)
+}
+
+function filterByTid(tid) {
+  filterConds.push({ name: 'tid', value: tid })
+  filterConds = filterConds
+  FetchCosts(filterConds)
+}
 </script>
 
 <div class="list">
-    {#each dateGrpCosts as item}
-    <div class="date">{item.day}</div>
+    {#each dateGrpCosts as grpItem}
+    <div class="date">
+      <span on:click={()=>{filterByDate('year', grpItem)}}>{grpItem.year}</span>/
+      <span on:click={()=>{filterByDate('month', grpItem)}}>{grpItem.month}</span>/
+      <span on:click={()=>{filterByDate('day', grpItem)}}>{grpItem.day}</span>
+    </div>
 
-    {#each item.costs as cost}
+    {#each grpItem.costs as cost}
     <div class="item">
         <div class="left">
             <div class="main">
                 <div class="price">-{cost.price}</div>
-                <div class="tag">{tags.find(o => o.tid === cost.tid)?.name}</div>
+                <div class="tag" on:click={() => { filterByTid(cost.tid) }}>{tags.find(o => o.tid === cost.tid)?.name}</div>
             </div>
             <div class="sub" style:display={!cost.note ? 'none' : ''}>
                 <div class="note">{cost.note || ''}</div>
@@ -61,8 +85,18 @@ function editCost(cost) {
     {/each}
 </div>
 
+<div class="filter-list">
+  {#each filterConds as item}
+    <div class="cond-item" on:click={() => {
+      filterConds = filterConds.filter(o => o.name !== item.name)
+      FetchCosts(filterConds)
+    }}>{item.name.substr(0, 1).toUpperCase()} = {item.value}</div>
+  {/each}
+</div>
+
 <style>
 .list {
+  position: relative;
   height: calc(100% - 60px);
   overflow-y: auto;
 }
@@ -70,6 +104,16 @@ function editCost(cost) {
 .list > .date {
   font-size: 18px;
   padding: 15px 25px 10px 25px;
+  display: flex;
+  flex-direction: row;
+}
+
+.list > .date > span {
+  cursor: pointer;
+}
+
+.list > .date > span:hover {
+  text-decoration: underline;
 }
 
 .item {
@@ -127,6 +171,11 @@ function editCost(cost) {
 .item .main .tag {
   font-size: 16px;
   color: #000;
+  cursor: pointer;
+}
+
+.item .main .tag:hover {
+  text-decoration: underline;
 }
 
 .item .sub {
@@ -148,5 +197,27 @@ function editCost(cost) {
 
 .item .actions > *:not(:last-child) {
   margin-right: 13px;
+}
+
+.filter-list {
+  display: flex;
+  flex-direction: row;
+  position: absolute;
+  right: 10px;
+  top: 70px;
+}
+
+.filter-list .cond-item {
+  background: #f1f1f1;
+  padding: 4px 10px;
+  cursor: pointer;
+}
+
+.filter-list .cond-item:hover {
+  background: rgb(219, 219, 219);
+}
+
+.filter-list .cond-item:not(:last-child) {
+  margin-right: 10px;
 }
 </style>

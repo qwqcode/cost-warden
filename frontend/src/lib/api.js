@@ -17,8 +17,10 @@ export async function signup(username, email, password, rePassword) {
     return await POST(`/user/signup`, params)
 }
 
-export async function getCosts() {
-    return await POST(`/cost/get`)
+export async function getCosts(filter) {
+    const params = {}
+    if (filter) params.filter = JSON.stringify(filter)
+    return await POST(`/cost/get`, params)
 }
 
 export async function getTags() {

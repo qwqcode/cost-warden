@@ -75,6 +75,24 @@ export function InitMonthlyChart(chartDom, data) {
       ],
       name: '月份'
     },
+    color: '#008DDD',
+    toolbox: {
+      show: true,
+      feature: {
+        mark: { show: true },
+        magicType: { show: true, type: ['line', 'bar'] },
+        saveAsImage: { show: true }
+      }
+    },
+    tooltip: {
+      trigger: 'axis',
+      axisPointer: {
+        type: 'shadow',
+        label: {
+          show: true
+        }
+      }
+    },
     yAxis: {
       type: 'value',
       name: '总消费 (元)'

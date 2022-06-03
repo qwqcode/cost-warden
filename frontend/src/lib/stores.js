@@ -20,8 +20,8 @@ export function FetchTags() {
     })
 }
 
-export function FetchCosts() {
-    Api.getCosts().then((costs) => {
+export function FetchCosts(filter) {
+    Api.getCosts(filter).then((costs) => {
         updateCosts(costs)
     })
 }
@@ -32,11 +32,14 @@ function updateCosts(src) {
     src.forEach((c) => {
         // @sample "2022-05-30 16:02:21.322000000"
         const time = c.date.split(' ')[1].split('.')[0].substr(0, 5)
-        const day = c.date.split(' ')[0].replace(/-/g, '/');
-        c = { time, day, ...c }
-        let dayArr = distArr.find(o => (o.day === day));
+        const date = c.date.split(' ')[0].replace(/-/g, '/');
+        const day = date.split('/')[2];
+        const month = date.split('/')[1];
+        const year = date.split('/')[0];
+        c = { time, date, day, month, year, ...c }
+        let dayArr = distArr.find(o => (o.date === date));
         if (!dayArr) {
-            dayArr = { day, costs: [] }
+            dayArr = { date, day, month, year, costs: [] }
             distArr.push(dayArr)
         }
         dayArr.costs.push(c);

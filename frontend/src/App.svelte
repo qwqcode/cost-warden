@@ -86,6 +86,7 @@ function onSignuped() {
 	}
 
 	.sidebar-body {
+		position: relative;
 		height: calc(100% - 120px);
 		width: 100%;
 	}
