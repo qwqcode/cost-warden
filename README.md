@@ -1,4 +1,6 @@
-# Cost Warden
+# [Cost Warden](https://github.com/qwqcode/cost-warden)
+
+> 记账软件 | Servlet 作业
 
 ## Docker
 
